@@ -12,6 +12,8 @@ function KovTimerTrainer:initialize()
     -- ensure it has what we need
     CheckSetDefaultValue(self, "userData", "table", {});
     CheckSetDefaultValue(self.userData, "TimerCountsDown", "boolean", true);
+    CheckSetDefaultValue(self.userData, "ReplaceMinutes", "boolean", false);
+
     CheckSetDefaultValue(self.userData, "ShowReds", "boolean", true);
     CheckSetDefaultValue(self.userData, "ShowYellows", "boolean", true);
     CheckSetDefaultValue(self.userData, "ShowGreens", "boolean", true);
@@ -31,6 +33,7 @@ end
 function KovTimerTrainer:draw()
     
     local TimerCountsDown = self.userData.TimerCountsDown;
+    local ReplaceMinutes = self.userData.ReplaceMinutes;
     local ShowReds = self.userData.ShowReds;
     local ShowYellows = self.userData.ShowYellows;
     local ShowGreens = self.userData.ShowGreens;
@@ -148,6 +151,9 @@ function KovTimerTrainer:draw()
                     seconds = "0"..seconds
                     end
                     local minutes = (math.floor(time/1000) - seconds)/60
+                    if ReplaceMinutes == true then
+                        minutes = ""
+                    end
                     time = minutes..":"..seconds
                     if OTFlag == 1 then
                         time = "OT "..time
@@ -179,8 +185,11 @@ function KovTimerTrainer:drawOptions(x, y)
     local user = self.userData;
 
     user.TimerCountsDown = uiCheckBox(user.TimerCountsDown, "Timer Counts Down", x, y);
-    y = y + 50;
+    y = y + 30;
 
+    user.ReplaceMinutes = uiCheckBox(user.ReplaceMinutes, "Hide Minutes", x, y);
+    y = y + 50;
+    
     user.ShowReds = uiCheckBox(user.ShowReds, "Show Red Armors", x, y);
     y = y + 30;
 
